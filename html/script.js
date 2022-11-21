@@ -36,7 +36,7 @@ function populateBodyItems(data) {
     $(".container-body").empty()
     for (let menuOptions = 0; menuOptions < data.length; menuOptions++){
       $(".container-body").append(`
-        <button class="row-3" onclick="choosenItem(${data[menuOptions].id})">${data[menuOptions].category} | Price: $${data[menuOptions].price}</button>
+        <button class="row-3" onclick="choosenItem(${data[menuOptions].id})">${data[menuOptions].label} | Price: $${data[menuOptions].price}</button>
       `);
     };
 }
