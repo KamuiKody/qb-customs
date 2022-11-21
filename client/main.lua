@@ -4,15 +4,13 @@ local inZone = false
 
 local function isProperJob(data)
     local types = {['name'] = 'job', ['type'] = 'jobType'}
-    for i = 1,#data.job.restricted do
-        for k,v in pairs(types) do
+    for k,v in pairs(types) do
+        for i = 1,#data[v].restricted do
             if QBCore.Functions.GetPlayerData().job[k] == data[v].restricted[i] then
                 return false
             end
         end
-    end
-    for i = 1,#data.job.required do
-        for k,v in pairs(types) do
+        for i = 1,#data[v].required do
             if QBCore.Functions.GetPlayerData().job[k] == data[v].required[i] then
                 return true
             end
