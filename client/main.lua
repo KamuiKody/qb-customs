@@ -3,12 +3,10 @@ local bodyPoly = {}
 local inZone = false
 
 local function isProperJob(data)
-    local hasjob = false
     local types = {['name'] = 'job', ['type'] = 'jobType'}
     for i = 1,#data.job.restricted do
         for k,v in pairs(types) do
             if QBCore.Functions.GetPlayerData().job[k] == data[v].restricted[i] then
-                hasjob = false
                 return false
             end
         end
@@ -16,23 +14,24 @@ local function isProperJob(data)
     for i = 1,#data.job.required do
         for k,v in pairs(types) do
             if QBCore.Functions.GetPlayerData().job[k] == data[v].required[i] then
-                hasjob = true
                 return true
             end
         end
     end
-    if not hasjob then
-        return false
-    end
+    return false
 end
 
 local function GetModCount(data)
     local menu = {}
     for k,v in pairs(Config.Categories) do
+        local addCat = true
         for i = 1,#data.restrictedparts do
-            if data.restrictedparts[i] == k then return end
+            if data.restrictedparts[i] == k then
+            addCat = false
+            return
+            end
         end
-        if GetNumVehicleMods(data.veh, k) > 0 then
+        if GetNumVehicleMods(data.veh, k) > 0 and addCat then
             local newPrice = 'Varies'
             if type(v.price) ~= 'table' then
                 newPrice = v.price
