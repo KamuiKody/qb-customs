@@ -1,0 +1,93 @@
+body {
+    display:none;
+    background: transparent;
+    text-align: center;
+   text-shadow: 0 1px 0 black;
+}
+
+#title {  
+    border: 2px solid white;
+    max-height:200px;
+    justify-content:center;
+    background:rgba(29, 29, 29, 0.331);
+    -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.882);
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .1);
+}
+
+
+.container-sm {
+    display:none;
+    overflow:hidden;
+    max-height:850px;
+    max-width:600px;
+    border:2px solid rgba(29, 29, 29, 0.331);
+    -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.882);
+    box-shadow: inset 0 1500px 2000px rgba(255, 255, 255, .1);
+    border-radius:15px;
+    position:absolute;
+    top: 50%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+}
+
+.button-right {
+    color: white;
+    font-size:25px;
+    border-radius:5px;
+}
+
+
+.container-body::-webkit-scrollbar {
+    display: none;
+}
+
+.container-body {
+    height:87.5%;
+    padding:5px;
+    overflow:scroll;
+    max-height:600px;
+    border-radius:5px;  
+    border: 2px solid white;
+    justify-content:center;
+    background:rgba(29, 29, 29, 0.331);
+    -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.882);
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .1);
+}
+
+h1 {
+    z-index:1;
+    border-radius:5px;
+    padding: 60px;
+    text-align:center;
+}
+
+button {
+    position:relative;
+    width: 100%;
+    top:10px;
+    overflow:hidden;
+    background: linear-gradient(269.96deg, #13191dc5 0.03%, #13191dc5 20.85%, rgba(255, 255, 255, 0.144) 43.75%, #13191dc5 73.42%, #13191dc5 99.97%);
+    border: 2px solid rgba(0, 0, 0, .2);
+    -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.882);
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .1);
+}
+
+.row-3 {
+    padding:5px;
+    border-radius:5px;
+    margin-top:10px;
+    margin-left:1%;
+    letter-spacing: 0.2em;
+    font-size: 1.5rem;
+    color:white;
+    text-align:center;
+    width:98%;
+}
+  
+.row-3:focus {
+    margin-top:10px;
+    margin-left:1%;
+    background:rgba(0,0,0,0);
+    color:white;
+    text-align:center;
+}
