@@ -7,7 +7,7 @@ local mod = -1
 local modCategory = -1 
 local locationInfo = nil
 
-local function isProperJob(data)
+local function isProperJob()
     local types = {['name'] = 'job', ['type'] = 'jobType'}
     for k,v in pairs(types) do
         for i = 1,#locationInfo[v].restricted do
@@ -113,10 +113,12 @@ end)
 
 RegisterNUICallback('Purchase', function(data)
     if isProperJob() and inZone and mod == data.part and modCategory == data.type then
-        QBCore.Functions.TriggerCallback('k-mechanic:cb:modBuy', function(cb)
+        QBCore.Functions.TriggerCallback('qb-customs:cb:modBuy', function(cb)
             if cb then
                 SetVehicleMod(locationInfo.veh, modCategory, mod)
                 QBCore.Functions.Notify(modCategory.." installed!", 'success')
+                local myCar = QBCore.Functions.GetVehicleProperties(locationInfo.veh)
+                TriggerServerEvent('qb-customs:server:updateVehicle', myCar)
             else
                 SetVehicleMod(locationInfo.veh, modCategory, stock)
                 QBCore.Functions.Notify("There arent enough funds in the shop for this.", 'error')
@@ -201,17 +203,19 @@ CreateThread(function()
         bodyCombo:onPlayerInOut(function(isPointInside, _, zone)
             if isPointInside then
                 locationInfo = v
-                if isProperJob(v) then
+                if isProperJob() then
                     inZone = true
                     local ent = GetVehiclePedIsIn(PlayerPedId(),false)
                     if ent ~= 0 then
                         locationInfo.veh = ent
+                        TriggerServerEvent('qb-customs:updateLocation', locationInfo, QBCore.Functions.GetPlayerData().citizenid)
                         UIloop()
                     end
                 end
             else
                 inZone = false
                 locationInfo = nil
+                TriggerServerEvent('qb-customs:updateLocation', locationInfo, QBCore.Functions.GetPlayerData().citizenid)
                 SetNuiFocus(false,false)
                 SendNUIMessage({action = 'hide'})
             end
