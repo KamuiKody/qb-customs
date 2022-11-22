@@ -2,43 +2,43 @@ let mod = -1
 let modType = -1
 
 function closeUI() {
-    $('body').css('display', 'none')
-    $.post("https://qb-customs/Close");
+  $('body').css('display', 'none')
+  $.post("https://qb-customs/Close");
 }
 
 function choosenMod(data) {
-    if (data === -2) {
-      $.post("https://qb-customs/BackToMain", JSON.stringify({})).then(resp => populateBodyItems(resp));
-      mod = -1
-      modType = -1
-    } else {
-      $.post("https://qb-customs/partActive", JSON.stringify({part : data}));
-      mod = data    
-      $.post("https://qb-customs/Preview", JSON.stringify({part : mod, type : modType}));
-    }
+  if (data === -2) {
+    $.post("https://qb-customs/BackToMain", JSON.stringify({})).then(resp => populateBodyItems(resp));
+    mod = -1
+    modType = -1
+  } else {
+    $.post("https://qb-customs/partActive", JSON.stringify({part : data}));
+    mod = data    
+    $.post("https://qb-customs/Preview", JSON.stringify({part : mod, type : modType}));
+  }
 }
 
 function newItems(resp){
-    $(".container-body").empty()
-    for (let adminOptions = 0; adminOptions < resp.length; adminOptions++){
-      $(".container-body").append(`
-        <button class="row-3"  onclick="choosenMod(${resp[adminOptions].id})">${resp[adminOptions].label}</button>
-      `);
-    };
+  $(".container-body").empty()
+  for (let adminOptions = 0; adminOptions < resp.length; adminOptions++){
+    $(".container-body").append(`
+      <button class="row-3"  onclick="choosenMod(${resp[adminOptions].id})">${resp[adminOptions].label}</button>
+    `);
+  };
 }
 
 function choosenItem(type) {
-    modType = type
-    $.post("https://qb-customs/CheckOptions", JSON.stringify({id : type})).then(resp => newItems(resp));
+  modType = type
+  $.post("https://qb-customs/CheckOptions", JSON.stringify({id : type})).then(resp => newItems(resp));
 }
 
 function populateBodyItems(data) {
-    $(".container-body").empty()
-    for (let menuOptions = 0; menuOptions < data.length; menuOptions++){
-      $(".container-body").append(`
-        <button class="row-3" onclick="choosenItem(${data[menuOptions].id})">${data[menuOptions].label} | Price: $${data[menuOptions].price}</button>
-      `);
-    };
+  $(".container-body").empty()
+  for (let menuOptions = 0; menuOptions < data.length; menuOptions++){
+    $(".container-body").append(`
+      <button class="row-3" onclick="choosenItem(${data[menuOptions].id})">${data[menuOptions].label} | Price: $${data[menuOptions].price}</button>
+    `);
+  };
 }
 
 window.addEventListener("message", (event) => {
