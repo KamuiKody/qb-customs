@@ -30,8 +30,8 @@ local function GetModCount()
         local addCat = true
         for i = 1,#locationInfo.restrictedparts do
             if locationInfo.restrictedparts[i] == k then
-            addCat = false
-            return
+                addCat = false
+                return
             end
         end
         if GetNumVehicleMods(locationInfo.veh, k) > 0 and addCat then
@@ -65,7 +65,14 @@ local function UIloop()
 end
 
 RegisterNUICallback('Close', function(data)
-
+    SetNuiFocus()
+    if stockCat >= 0 then
+        SetVehicleMod(locationInfo.veh, stockCat, stock)
+    end
+    stock = -1
+    stockCat = -1  
+    mod = -1
+    modCategory = -1 
 end)
 
 RegisterNUICallback('BackToMain', function(data, cb)
@@ -79,22 +86,20 @@ RegisterNUICallback('BackToMain', function(data, cb)
 end)
 
 RegisterNUICallback('partActive', function(data)
-    if isProperJob() then
-        if inZone then
-            mod = data.part
-        end
+    if isProperJob() and inZone then
+        mod = data.part
     end
 end)
 
 RegisterNUICallback('Preview', function(data)
     if modCategory ~= data.type then return end
-    if mod == GetVehicleMod(locationInfo.veh, data.type) and stockCat == data.type then return end
+    if mod == GetVehicleMod(locationInfo.veh, modCategory) and stockCat == modCategory then return end
     if stockCat ~= data.type then
-        stock = GetVehicleMod(locationInfo.veh, data.type)
+        stock = GetVehicleMod(locationInfo.veh, modCategory)
     end
-    stockCat = data.type
+    stockCat = modCategory
     mod = data.part
-    SetVehicleMod(locationInfo.veh, data.type, data.part)
+    SetVehicleMod(locationInfo.veh, modCategory, data.part)
     if data.type == 14 then
         local count = 300
         while count > 1 do
@@ -107,8 +112,7 @@ RegisterNUICallback('Preview', function(data)
 end)
 
 RegisterNUICallback('Purchase', function(data)
-    if isProperJob() and inZone then
-        if modCategory ~= data.type or mod ~= data.part then return end
+    if isProperJob() and inZone and mod == data.part and modCategory == data.type then
         QBCore.Functions.TriggerCallback('k-mechanic:cb:modBuy', function(cb)
             if cb then
                 SetVehicleMod(locationInfo.veh, modCategory, mod)
@@ -131,23 +135,41 @@ RegisterNUICallback('CheckOptions', function(data, cb)
     for k,v in pairs(Config.Categories) do
         if k == data.id then
             local amount = GetNumVehicleMods(locationInfo.veh, k)
-            menu[#menu+1] = {
-                label = v.category..' | Price: $'..v.price,
-                modType = -1,
-                id = -1
-            }
+            local priceType = false
+            if type(v.price) == 'table' then
+                menu[#menu+1] = {
+                    label = v.category,
+                    modType = -1,
+                    id = -1
+                }
+                priceType = true
+            else
+                menu[#menu+1] = {
+                    label = v.category..' | Price: $'..v.price,
+                    modType = -1,
+                    id = -1
+                }
+            end
             if v.subCat then
                 for t,u in pairs(v.subCat) do
+                    local price = ''
+                    if priceType then
+                        price = ' | Price: '..v.price[t+1]
+                    end
                     menu[#menu+1] = {
-                        label = u,
+                        label = u .. price,
                         modType = k,
                         id = t
                     }
                 end                
             else
                 for u = 1,amount do
+                    local price = ''
+                    if priceType then
+                        price = ' | Price: '..v.price[u]
+                    end
                     menu[#menu+1] = {
-                        label = GetLabelText(GetModTextLabel(locationInfo.veh, k, u-1)),
+                        label = GetLabelText(GetModTextLabel(locationInfo.veh, k, u-1)) .. price,
                         modType = k,
                         id = u-1
                     }
