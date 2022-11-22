@@ -92,8 +92,7 @@ RegisterNUICallback('partActive', function(data)
 end)
 
 RegisterNUICallback('Preview', function(data)
-    if modCategory ~= data.type then return end
-    if mod == GetVehicleMod(locationInfo.veh, modCategory) and stockCat == modCategory then return end
+    if modCategory ~= data.type or mod ~= GetVehicleMod(locationInfo.veh, modCategory) or stockCat ~= modCategory then return end
     if stockCat ~= data.type then
         stock = GetVehicleMod(locationInfo.veh, modCategory)
     end
@@ -116,9 +115,9 @@ RegisterNUICallback('Purchase', function(data)
         QBCore.Functions.TriggerCallback('qb-customs:cb:modBuy', function(cb)
             if cb then
                 SetVehicleMod(locationInfo.veh, modCategory, mod)
-                QBCore.Functions.Notify(modCategory.." installed!", 'success')
                 local myCar = QBCore.Functions.GetVehicleProperties(locationInfo.veh)
                 TriggerServerEvent('qb-customs:server:updateVehicle', myCar)
+                QBCore.Functions.Notify(modCategory.." installed!", 'success')
             else
                 SetVehicleMod(locationInfo.veh, modCategory, stock)
                 QBCore.Functions.Notify("There arent enough funds in the shop for this.", 'error')

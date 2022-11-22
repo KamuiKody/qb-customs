@@ -49,7 +49,7 @@ QBCore.Functions.CreateCallback('qb-customs:cb:modBuy', function(source, cb, dat
                 if type(price) == 'table' then
                     price = v.price[data.part+1]
                 end
-                if exports['qb-management']:RemoveMoney('mechanic', price) then
+                if exports['qb-management']:RemoveMoney(Player.PlayerData.job.name, price) then
                     cb(true)
                     -- log it here
                 else
