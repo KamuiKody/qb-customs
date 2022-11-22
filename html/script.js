@@ -41,6 +41,10 @@ function populateBodyItems(data) {
   };
 }
 
+function Purchase() {
+  $.post("https://qb-customs/Purchase", JSON.stringify({part : mod, type : modType}));  
+}
+
 window.addEventListener("message", (event) => {
     eventData = event.data;
     if (eventData.action == "show") {
