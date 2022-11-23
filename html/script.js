@@ -12,7 +12,6 @@ function choosenMod(data) {
     mod = -1
     modType = -1
   } else {
-    $.post("https://qb-customs/partActive", JSON.stringify({part : data}));
     mod = data    
     $.post("https://qb-customs/Preview", JSON.stringify({part : mod, type : modType}));
   }
@@ -36,7 +35,7 @@ function populateBodyItems(data) {
   $(".container-body").empty()
   for (let menuOptions = 0; menuOptions < data.length; menuOptions++){
     $(".container-body").append(`
-      <button class="row-3" onclick="choosenItem(${data[menuOptions].id})">${data[menuOptions].label} | Price: $${data[menuOptions].price}</button>
+      <button class="row-3" onclick="choosenItem(${data[menuOptions].id})">${data[menuOptions].label} <br /> Price: ${data[menuOptions].price}</button>
     `);
   };
 }
