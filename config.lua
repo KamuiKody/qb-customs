@@ -3,8 +3,8 @@ Config.RequireRepair = false -- set as body health/ i.e 1000.0
 
 Config.Locations = {
     {
-        coords = vector3(0,0,0),
-        radius = 5,
+        coords = vector3(-211.79, -1324.32, 30.89),
+        radius = 5.0,
         job = {
             required = {'mechanic'},
             restricted = {}
@@ -88,12 +88,12 @@ Config.Categories = {
     [8] = {label = "Left Fender", price = 500},
     [9] = {label = "Right Fender", price = 500},
     [10] = {label = "Roof", price = 500},    
-    [11] = {label = "Engine Upgrade", price = {500,1000,3500,7000}},
-    [12] = {label = "Brake Upgrade", price = {500,1000,3500,7000}},
-    [13] = {label = "Transmission Upgrade", price = {500,1000,3500,7000}},
+    [11] = {label = "Engine Upgrade", price = {5000,10000,20000,35000,52000}},
+    [12] = {label = "Brake Upgrade", price = {5000,10000,20000,35000,52000}},
+    [13] = {label = "Transmission Upgrade", price = {5000,10000,20000,35000,52000}},
     [14] = {label = "Horns", price = 500, subCat = Config.hornLabels},
-    [15] = {label = "Suspension Upgrade", price = {500,1000,3500,7000}},
-    [16] = {label = "Armour Upgrade", price = {500,1000,3500,7000}},
+    [15] = {label = "Suspension Upgrade", price = {5000,10000,20000,35000,52000}},
+    [16] = {label = "Armour Upgrade", price = {5000,10000,20000,35000,52000}},
     [17] = {label = 'Nitrous', price = 500},
     [18] = {label = "Turbo Upgrade", price = 32000},
     [19] = {label = "Subwoofer", price = 500},

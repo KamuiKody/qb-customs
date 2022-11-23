@@ -1,18 +1,17 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local locationInfo = {}
 
-local function isProperJob()
-    local src = source
-    local citizenid = QBCore.Functions.GetPlayer(src).PlayerData.citizenid
+local function isProperJob(src)
+    local PlayerData = QBCore.Functions.GetPlayer(src).PlayerData
     local types = {['name'] = 'job', ['type'] = 'jobType'}
     for k,v in pairs(types) do
-        for i = 1,#locationInfo[citizenid][v].restricted do
-            if QBCore.Functions.GetPlayerData().job[k] == locationInfo[v].restricted[i] then
+        for i = 1,#locationInfo[PlayerData.citizenid][v].restricted do
+            if PlayerData.job[k] == locationInfo[v].restricted[i] then
                 return false
             end
         end
-        for i = 1,#locationInfo[citizenid][v].required do
-            if QBCore.Functions.GetPlayerData().job[k] == locationInfo[v].required[i] then
+        for i = 1,#locationInfo[PlayerData.citizenid][v].required do
+            if PlayerData.job[k] == locationInfo[PlayerData.citizenid][v].required[i] then
                 return true
             end
         end
@@ -42,13 +41,16 @@ end)
 QBCore.Functions.CreateCallback('qb-customs:cb:modBuy', function(source, cb, data)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if isProperJob() then
+    if isProperJob(src) then
         for k,v in pairs(Config.Categories) do
             if k == data.type then
-                local price = v.price
-                if type(price) == 'table' then
-                    price = v.price[data.part+1]
+                local price = 0
+                if type(v.price) == 'table' then
+                    price = v.price[data.part]
+                else
+                    price = v.price
                 end
+                print(price)
                 if exports['qb-management']:RemoveMoney(Player.PlayerData.job.name, price) then
                     cb(true)
                     -- log it here
