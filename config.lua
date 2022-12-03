@@ -17,8 +17,132 @@ Config.Locations = {
             required = {},
             restricted = {18}
         },
-        restrictedparts = {17,19,20,21,22,23,24,26,47,49}
+        restrictedparts = {--[[17,19,20,21,22,23,24,26,47,49]]}
     }
+}
+
+Config.Paints = {
+    [1] = {
+        label = 'Standard',
+        items = {
+            {label = "Black", id = 0},
+            {label = "Carbon Black", id = 147},
+            {label = "Graphite", id = 1},
+            {label = "Anhracite Black", id = 11},
+            {label = "Black Steel", id = 2},
+            {label = "Dark Steel", id = 3},
+            {label = "Silver", id = 4},
+            {label = "Bluish Silver", id = 5},
+            {label = "Rolled Steel", id = 6},
+            {label = "Shadow Silver", id = 7},
+            {label = "Stone Silver", id = 8},
+            {label = "Midnight Silver", id = 9},
+            {label = "Cast Iron Silver", id = 10},
+            {label = "Red", id = 27},
+            {label = "Torino Red", id = 28},
+            {label = "Formula Red", id = 29},
+            {label = "Lava Red", id = 150},
+            {label = "Blaze Red", id = 30},
+            {label = "Grace Red", id = 31},
+            {label = "Garnet Red", id = 32},
+            {label = "Sunset Red", id = 33},
+            {label = "Cabernet Red", id = 34},
+            {label = "Wine Red", id = 143},
+            {label = "Candy Red", id = 35},
+            {label = "Hot Pink", id = 135},
+            {label = "Pfsiter Pink", id = 137},
+            {label = "Salmon Pink", id = 136},
+            {label = "Sunrise Orange", id = 36},
+            {label = "Orange", id = 38},
+            {label = "Bright Orange", id = 138},
+            {label = "Gold", id = 99},
+            {label = "Bronze", id = 90},
+            {label = "Yellow", id = 88},
+            {label = "Race Yellow", id = 89},
+            {label = "Dew Yellow", id = 91},
+            {label = "Dark Green", id = 49},
+            {label = "Racing Green", id = 50},
+            {label = "Sea Green", id = 51},
+            {label = "Olive Green", id = 52},
+            {label = "Bright Green", id = 53},
+            {label = "Gasoline Green", id = 54},
+            {label = "Lime Green", id = 92},
+            {label = "Midnight Blue", id = 141},
+            {label = "Galaxy Blue", id = 61},
+            {label = "Dark Blue", id = 62},
+            {label = "Saxon Blue", id = 63},
+            {label = "Blue", id = 64},
+            {label = "Mariner Blue", id = 65},
+            {label = "Harbor Blue", id = 66},
+            {label = "Diamond Blue", id = 67},
+            {label = "Surf Blue", id = 68},
+            {label = "Nautical Blue", id = 69},
+            {label = "Racing Blue", id = 73},
+            {label = "Ultra Blue", id = 70},
+            {label = "Light Blue", id = 74},
+            {label = "Chocolate Brown", id = 96},
+            {label = "Bison Brown", id = 101},
+            {label = "Creeen Brown", id = 95},
+            {label = "Feltzer Brown", id = 94},
+            {label = "Maple Brown", id = 97},
+            {label = "Beechwood Brown", id = 103},
+            {label = "Sienna Brown", id = 104},
+            {label = "Saddle Brown", id = 98},
+            {label = "Moss Brown", id = 100},
+            {label = "Woodbeech Brown", id = 102},
+            {label = "Straw Brown", id = 99},
+            {label = "Sandy Brown", id = 105},
+            {label = "Bleached Brown", id = 106},
+            {label = "Schafter Purple", id = 71},
+            {label = "Spinnaker Purple", id = 72},
+            {label = "Midnight Purple", id = 142},
+            {label = "Bright Purple", id = 145},
+            {label = "Cream", id = 107},
+            {label = "Ice White", id = 111},
+            {label = "Frost White", id = 112}
+        }
+    },
+    [2] = {
+        label = 'Matte',
+        items = {
+            {label = "Black", id = 12},
+            {label = "Gray", id = 13},
+            {label = "Light Gray", id = 14},
+            {label = "Ice White", id = 131},
+            {label = "Blue", id = 83},
+            {label = "Dark Blue", id = 82},
+            {label = "Midnight Blue", id = 84},
+            {label = "Midnight Purple", id = 149},
+            {label = "Schafter Purple", id = 148},
+            {label = "Red", id = 39},
+            {label = "Dark Red", id = 40},
+            {label = "Orange", id = 41},
+            {label = "Yellow", id = 42},
+            {label = "Lime Green", id = 55},
+            {label = "Green", id = 128},
+            {label = "Forest Green", id = 151},
+            {label = "Foliage Green", id = 155},
+            {label = "Olive Darb", id = 152},
+            {label = "Dark Earth", id = 153},
+            {label = "Desert Tan", id = 154}
+        }
+    },
+    [3] = {
+        label = 'Metals',
+        items = {
+            {label = "Brushed Steel", id = 117},
+            {label = "Brushed Black Steel", id = 118},
+            {label = "Brushed Aluminium", id = 119},
+            {label = "Pure Gold", id = 158},
+            {label = "Brushed Gold", id = 159},
+            {label = "Chrome", id = 120}
+        }
+    }
+}
+
+Config.PaintLocations = {
+    ['primary'] = Config.Paints,
+    ['secondary'] = Config.Paints
 }
 
 Config.hornLabels = {
@@ -126,5 +250,6 @@ Config.Categories = {
     [46] = {label = "Window", price = 500},
     [47] = {label = "Door", price = 500},
     [48] = {label = "Livery", price = 500},
-    [49] = {label = "Lightbar", price = 500}    
+    [49] = {label = "Lightbar", price = 500},
+    [50] = {label = "Paint", price = 500}
 }

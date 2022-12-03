@@ -5,6 +5,8 @@ local stock = -1
 local mod = -1
 local modCategory = -1 
 local locationInfo = nil
+local paintLoc = nil
+local originalColor = {}
 
 local function isProperJob()
     local types = {['name'] = 'job', ['type'] = 'jobType'}
@@ -81,24 +83,93 @@ RegisterNUICallback('BackToMain', function(data, cb)
     stock = -1
     mod = -1
     modCategory = -1 
+    paintLoc = nil
+    if originalColor['primary'] then
+        local primaryColor, secondaryColor = GetVehicleColours(locationInfo.veh)
+        SetVehicleColours(locationInfo.veh, originalColor['primary'], secondaryColor)
+    end
+    if originalColor['secondary'] then
+        local primaryColor, secondaryColor = GetVehicleColours(locationInfo.veh)
+        SetVehicleColours(locationInfo.veh, primaryColor, originalColor['secondary'])
+    end
+    originalColor = {}
     if not inZone then return end
     cb(GetModCount())
 end)
 
-RegisterNUICallback('Preview', function(data)
-    if modCategory ~= data.type then return end
-    if isProperJob() and inZone then
-        mod = data.part
-    end
-    SetVehicleMod(locationInfo.veh, modCategory, data.part)
-    if data.type == 14 then
-        local count = 300
-        while count > 1 do
-            SetControlNormal(0,86,1.0)
-            Wait(1)
-            count = count - 1
+RegisterNUICallback('PaintPreview', function(data, cb)
+    --SetVehicleModKit(locationInfo.veh, 0)
+    local primaryColor, secondaryColor = GetVehicleColours(locationInfo.veh)
+    print(primaryColor,secondaryColor)
+    if not originalColor[paintLoc] then
+        if paintLoc == 'primary' then
+            originalColor[paintLoc] = primaryColor
+        else
+            originalColor[paintLoc] = secondaryColor
         end
-        StartVehicleHorn(locationInfo.veh, 2000, "HELDDOWN", true)
+    end
+    print(data.colorType,data.color)
+    QBCore.Debug(Config.Paints[data.colorType].items)
+    if paintLoc == 'primary' then
+        SetVehicleColours(locationInfo.veh, Config.Paints[data.colorType].items[data.color].id, secondaryColor)
+    else
+        SetVehicleColours(locationInfo.veh, primaryColor, Config.Paints[data.colorType][data.color].id)
+    end
+end)
+
+RegisterNUICallback('PaintCat', function(data, cb)
+    local menu = {}
+    if not paintLoc then
+        local num = 0
+        if data.part == -3 then
+            paintLoc = 'primary'
+        else
+            paintLoc = 'secondary'
+        end
+        for k,v in pairs(Config.Paints) do
+            menu[#menu+1] = {
+                label = v.label,
+                modtype = k,
+                id = k
+            }
+        end
+        menu[#menu+1] = {
+            label = '<= Go Back',
+            modType = -2,
+            id = -2
+        }
+        cb(menu)
+    else
+        local paintTable = Config.Paints[data.part].items
+        for i = 1,#paintTable do
+            menu[#menu+1] = {
+                label = paintTable[i].label,
+                modtype = paintLoc,
+                id = i,
+                colorType = data.part
+            }
+        end
+        menu[#menu+1] = {
+            label = '<= Go Back',
+            modType = -2,
+            id = -2
+        }
+        cb(menu)
+    end
+end)
+
+RegisterNUICallback('Preview', function(data, cb)
+    if isProperJob() and inZone then
+        SetVehicleMod(locationInfo.veh, modCategory, data.part)
+        if data.type == 14 then
+            local count = 300
+            while count > 1 do
+                SetControlNormal(0,86,1.0)
+                Wait(1)
+                count = count - 1
+            end
+            StartVehicleHorn(locationInfo.veh, 2000, "HELDDOWN", true)
+        end
     end
 end)
 
@@ -129,54 +200,71 @@ RegisterNUICallback('CheckOptions', function(data, cb)
     local menu = {}
     for k,v in pairs(Config.Categories) do
         if k == data.id then
-            local amount = GetNumVehicleMods(locationInfo.veh, k)
-            local priceType = false
-            if type(v.price) == 'table' then
+            if k == 50 then
                 menu[#menu+1] = {
-                    label = v.label,
-                    modType = -1,
-                    id = -1
+                    label = 'Primary Color',
+                    modtype = k,
+                    id = -3
                 }
-                priceType = true
+                menu[#menu+1] = {
+                    label = 'Secondary Color',
+                    modtype = k,
+                    id = -4
+                }
             else
-                menu[#menu+1] = {
-                    label = v.label..' | Price: '..v.price,
-                    modType = -1,
-                    id = -1
-                }
-            end
-            if v.subCat then
-                for t,u in pairs(v.subCat) do
-                    local price = ''
-                    if priceType then
-                        price = ' | Price: '..v.price[t+1]
-                    end
+                local amount = GetNumVehicleMods(locationInfo.veh, k)
+                local priceType = false
+                if type(v.price) == 'table' then
                     menu[#menu+1] = {
-                        label = u .. price,
-                        modType = k,
-                        id = t
+                        label = v.label,
+                        modType = -1,
+                        id = -1
                     }
-                end                
-            else
-                for u = 1,amount do
-                    local price = ''
-                    local title = GetLabelText(GetModTextLabel(locationInfo.veh, k, u))
-                    if priceType then
-                        price = ' Price: '..v.price[u]
-                        title = v.label .. ' level ' .. u
-                    end
+                    priceType = true
+                else
                     menu[#menu+1] = {
-                        label = title .. price,
-                        modType = k,
-                        id = u
+                        label = v.label..' | Price: '..v.price,
+                        modType = -1,
+                        id = -1
                     }
                 end
+                if v.subCat then
+                    for t,u in pairs(v.subCat) do
+                        local price = ''
+                        if priceType then
+                            price = ' | Price: '..v.price[t+1]
+                        end
+                        menu[#menu+1] = {
+                            label = u .. price,
+                            modType = k,
+                            id = t
+                        }
+                    end                
+                else
+                    for u = 1,amount+1 do
+                        local price = ''
+                        local title = GetLabelText(GetModTextLabel(locationInfo.veh, k, u-1))
+                        local id = u-1
+                        if priceType then
+                            price = ' Price: '..v.price[u]
+                            title = v.label .. ' level ' .. u
+                            id = u
+                        end
+                        if title ~= 'NULL' then
+                            menu[#menu+1] = {
+                                label = title .. price,
+                                modType = k,
+                                id = id
+                            }
+                        end
+                    end
+                end
+                menu[#menu+1] = {
+                    label = 'Default',
+                    modType = k,
+                    id = -1
+                }
             end
-            menu[#menu+1] = {
-                label = 'Default',
-                modType = k,
-                id = -1
-            }
             menu[#menu+1] = {
                 label = '<= Go Back',
                 modType = -2,
