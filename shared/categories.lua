@@ -1,25 +1,4 @@
-Config = {}
-Config.RequireRepair = false -- set as body health/ i.e 1000.0
-
-Config.Locations = {
-    {
-        coords = vector3(-211.79, -1324.32, 30.89),
-        radius = 5.0,
-        job = {
-            required = {'mechanic'},
-            restricted = {}
-        },
-        jobType = {
-            required = {'mechanic'},
-            restricted = {}
-        },
-        class = {
-            required = {},
-            restricted = {18}
-        },
-        restrictedparts = {--[[17,19,20,21,22,23,24,26,47,49]]}
-    }
-}
+Config = Config
 
 Config.Paints = {
     [1] = {
@@ -141,8 +120,19 @@ Config.Paints = {
 }
 
 Config.PaintLocations = {
-    ['primary'] = Config.Paints,
-    ['secondary'] = Config.Paints
+    [0] = {label = 'Primary', items = Config.Paints},
+    [1] = {label = 'Secondary', items = Config.Paints}
+}
+
+Config.wheelCategories = {
+    [0] = 'Sport',
+    [1] = 'Muscle',
+    [2] = 'Lowrider',
+    [3] = 'SUV',
+    [4] = 'Offroad',
+    [5] = 'Tuner',
+    [6] = 'Motorcycle',
+    [7] = 'High End'
 }
 
 Config.hornLabels = {
@@ -212,19 +202,19 @@ Config.Categories = {
     [8] = {label = "Left Fender", price = 500},
     [9] = {label = "Right Fender", price = 500},
     [10] = {label = "Roof", price = 500},    
-    [11] = {label = "Engine Upgrade", price = {5000,10000,20000,35000,52000}},
-    [12] = {label = "Brake Upgrade", price = {5000,10000,20000,35000,52000}},
-    [13] = {label = "Transmission Upgrade", price = {5000,10000,20000,35000,52000}},
-    [14] = {label = "Horns", price = 500, subCat = Config.hornLabels},
-    [15] = {label = "Suspension Upgrade", price = {5000,10000,20000,35000,52000}},
-    [16] = {label = "Armour Upgrade", price = {5000,10000,20000,35000,52000}},
+    [11] = {label = "Engine Upgrade", price = {5000, 10000, 20000, 35000, 52000, 60000}},
+    [12] = {label = "Brake Upgrade", price = {5000, 10000, 20000, 35000, 52000, 60000}},
+    [13] = {label = "Transmission Upgrade", price = {5000, 10000, 20000, 35000, 52000, 60000}},
+    [14] = {label = "Horns", price = 500, items = Config.hornLabels},
+    [15] = {label = "Suspension Upgrade", price = {5000, 10000, 20000, 35000, 52000, 60000}},
+    [16] = {label = "Armour Upgrade", price = {5000, 10000, 20000, 35000, 52000, 60000}},
     [17] = {label = 'Nitrous', price = 500},
     [18] = {label = "Turbo Upgrade", price = 32000},
     [19] = {label = "Subwoofer", price = 500},
     [20] = {label = "Tire Smoke", price = 500},
     [21] = {label = "Hydraulics", price = 500},
     [22] = {label = "Headlights", price = 500},
-    [23] = {label = "Wheels", price = 500},
+    [23] = {label = "Wheels", price = 500, items = Config.wheelCategories},
     [24] = {label = "Rear Wheels", price = 500},
     [25] = {label = "Plate Holder", price = 500},
     [26] = {label = "Vanity Plates", price = 500},

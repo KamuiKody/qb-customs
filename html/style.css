@@ -1,5 +1,5 @@
 body {
-    display:none;
+    display:flex;
     background: transparent;
     font-family: 'Poppins', sans-serif;
     color: #ededed;
